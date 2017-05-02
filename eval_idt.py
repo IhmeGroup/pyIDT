@@ -8,7 +8,6 @@ from support import set_gas_using_palette
 def eval_idt(args):
     mech, options, x = args
     gas = global_var.gases[mech]
-    dt = options.dt
     t_fin = options.t_fin
 
     time_vec = []
@@ -23,7 +22,6 @@ def eval_idt(args):
     stoich_o2 = 0.0
     for idx, species in enumerate(options.palette):
         stoich_o2 += x[idx]*(gas.n_atoms(species, 'C') + 0.25 * gas.n_atoms(species, 'H'))
-    # print "Stoichiometric mole ratio is: ", stoich_o2
 
     # Set gas composition with air
     x_mod = (options.phi/stoich_o2)*x
@@ -32,18 +30,15 @@ def eval_idt(args):
     gas.TPX = t, p, comp_string
 
     # Create reactor network
-    # r = ct.IdealGasConstPressureReactor(gas)
     r = ct.Reactor(gas)
     sim = ct.ReactorNet([r])
-
+ 
     # Advance the reactor
     time = 0.0
     time_vec.append(time)
 
     while time < t_fin:
-        time += dt
-        sim.advance(time)
-
+        time = sim.step()
         time_vec.append(time)
         temp_vec.append(r.T)
 
@@ -63,7 +58,7 @@ def eval_idt(args):
     if temp_vec[index] < t:
         return -1
     else:
-	print np.hstack((x, time_vec[index]))
+	print str(["{:0.3f}".format(y) for y in x]) +", "+ str("{:0.3e}".format(time_vec[index]))
 	sys.stdout.flush()
         return time_vec[index]
 

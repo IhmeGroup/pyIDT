@@ -1,17 +1,19 @@
 # Check mesh_generate.py before running this
 test_palette: 
-- MCYC6
 - NPBENZ
 - NC12H26
 - IC8H18
 - TMBENZ
-test_composition: [0, 0.228, 0.404, 0.295, 0.073]
+test_composition: [0.228, 0.404, 0.295, 0.073]
+outer_center: [0.5, 0.5, 0.5, 0.5]
+outer_intervals: [0.5, 0.5, 0.5, 0.5]
 cti_file: mech/POLIMI_TOT.cti
 mixture_name: gas
-time_step: 1.0e-5
-palette_resolution: 0.01
+palette_resolution: 10
 equivalence_ratio: 1.0
 final_time: 5.0e-3
 target_mw: 138.7
 target_hc: 1.96
 output_file: output/dooley.dat
+override_targets: True
+write_output: True

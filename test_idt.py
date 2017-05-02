@@ -1,6 +1,8 @@
 from options import options
 from eval_idt import eval_idt
 from mesh_generate import mesh_generate
+from mesh_generate_box import mesh_generate_box
+from support import check_override
 import global_var
 import multiprocessing
 import itertools
@@ -30,26 +32,34 @@ def main():
     # Set options structure
     opt = options()
     opt.palette = config["test_palette"]
-    test_comp = config["test_composition"]
+    opt.test_comp = config["test_composition"]
+    opt.outer_center = config["outer_center"]
+    opt.outer_intervals = config["outer_intervals"]
     opt.cti_file = config["cti_file"]
     opt.mixture = config["mixture_name"]
-    opt.dt = config["time_step"]
-    opt.dx = config["palette_resolution"]
+    opt.nx = config["palette_resolution"]
     opt.phi = config["equivalence_ratio"]
     opt.t_fin = config["final_time"]
     opt.target_mw = config["target_mw"]
     opt.target_hc = config["target_hc"]
-    opt.output_file = config["output_file"] 
+    opt.output_file = config["output_file"]
+    opt.override_targets = config["override_targets"]
+    opt.write_output = config["write_output"]
 
     # Close YAML file
     yaml_file.close()
-  
-    # Dump input options structure
-    opt.dump()
+
+    # Set gas
+    gas = ct.Solution(opt.cti_file)
+
+    # Check override
+    check_override(gas, opt)
+
+    # Dump options
+    opt.dump()         
 
     # Generate mesh
-    gas = ct.Solution(opt.cti_file)
-    mesh_data = mesh_generate(gas, opt)
+    mesh_data = mesh_generate_box(gas,opt)
     print "Mesh generation complete!"
     print "Number of points = ", (np.array(mesh_data)).shape[0]
 
@@ -61,14 +71,12 @@ def main():
     pool = multiprocessing.Pool(processes=nProcs,
                                 initializer=init_process,
                                 initargs=(opt.cti_file,))
-
-    print "Gas objects created!"
  
     try:
-        os.remove(opt.file_name)
+        os.remove(opt.output_file)
     except OSError:
         pass
-    # f = open(opt.file_name, 'a')
+    f = open(opt.output_file, 'a')
 
     res = pool.map(eval_idt,
                 zip(itertools.repeat(opt.cti_file),
@@ -81,14 +89,15 @@ def main():
 
     print "Computation finished!"
 
-     #for mesh_point in mesh_data:
-     #   idt = eval_idt(gas, opt, mesh_point)
-     #   dump_vec = np.hstack((mesh_point, idt))
-     #   print ",".join(map(str,dump_vec))
-     #   f.write(",".join(map(str, dump_vec)))
-     #   f.write("\n")
+    dump_mat = []
+    if (opt.write_output): 
+        for idx,mesh_point in enumerate(mesh_data):
+       	    dump_point = np.hstack((mesh_point, res[idx]))
+            dump_mat.append(dump_point)            
+        np.savetxt(f,dump_mat,fmt='%.3e')
 
-    # f.close()
+      
+    f.close()
 
 if __name__ == '__main__':
     main()
