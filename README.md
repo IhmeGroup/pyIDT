@@ -16,6 +16,10 @@ Other prerequisites for this code are
 * multiprocessing
 * numpy, itertools
 
+## License ##
+
+Please refer to the LICENSE.pdf in the repository. Note that this code requires PRIOR PERMISSION FROM AUTHORS FOR COMMERCIAL PURPOSES.
+
 ## Who do I talk to? ##
 
 * Repo owner or admin : [Pavan Bharadwaj](https://github.com/gpavanb)
