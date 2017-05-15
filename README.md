@@ -7,7 +7,8 @@ pyIDT is a (parallel) Python code used to calculate ignition delay time (IDT) fo
 First, setup the YAML file for the particular surrogate. Note that this requires the pyYAML package which can be installed trivially using pip. Sample YAML files are provided in the `data` directory. Also, some mechanism files have been provided in `mech` folder [1], [2]. The code, for example, can be run using
 
 ```
-python test_idt.py data/violi.yaml
+mkdir output
+python test_idt.py data/violi.yml
 ```
 
 Other prerequisites for this code are 

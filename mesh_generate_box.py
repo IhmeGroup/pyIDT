@@ -1,5 +1,4 @@
 import numpy as np
-from global_constants import *
 from support import numberToBase
 
 def mesh_generate_box(gas,options):

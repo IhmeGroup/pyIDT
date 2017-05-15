@@ -1,4 +1,3 @@
-from global_constants import *
 import numpy as np
 
 def create_comp_string(gas, options, x):
