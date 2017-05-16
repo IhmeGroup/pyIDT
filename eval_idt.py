@@ -14,8 +14,8 @@ def eval_idt(args):
     temp_vec = []
 
     # DCN Conditions
-    p = 2239282.0  # Pa
-    t = 833  # K
+    p = options.pres  # Pa
+    t = options.temp  # K
     phi = options.phi
 
     # Add air to the mixture
@@ -58,7 +58,8 @@ def eval_idt(args):
     if temp_vec[index] < t:
         return -1
     else:
-	print str(["{:0.3f}".format(y) for y in x]) +", "+ str("{:0.3e}".format(time_vec[index]))
+	print str(["{:0.3f}".format(y) for y in x]) +", "+ str("{:0.7e}".format(time_vec[index]))
+        #print str(options.pres) + ", " + str(options.temp) + ", " + str(options.phi) + ", " + str("{:0.7e}".format(time_vec[index]))
 	sys.stdout.flush()
         return time_vec[index]
 

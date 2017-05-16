@@ -37,6 +37,8 @@ def main():
     opt.cti_file = config["cti_file"]
     opt.mixture = config["mixture_name"]
     opt.nx = config["palette_resolution"]
+    opt.pres = config["pressure"]
+    opt.temp = config["temperature"]
     opt.phi = config["equivalence_ratio"]
     opt.t_fin = config["final_time"]
     opt.target_mw = config["target_mw"]
