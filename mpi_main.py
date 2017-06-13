@@ -64,10 +64,41 @@ def main():
 	    # Only done using Processor 0
 	    mesh_data = mesh_generate_box(gas,opt)
             print "Mesh generation complete!"
-            print "Number of points = ", (np.array(mesh_data)).shape[0]
+	    nEl_global = (np.array(mesh_data)).shape[0]
+            print "Number of points = ", nEl_global
 
 	    # Print number of processors used
-	    print "Number of processors = ", comm.Get_size()
+	    nProcs = comm.Get_size()
+	    print "Number of processors = ", nProcs
+
+	    if (nProcs > nEl_global):
+	        print "Too few points to scatter. Decrease number of processors"
+		comm.Abort()
+
+	    # Create sub-list for each processor
+	    split = np.array_split(mesh_data, nProcs) 
+
+	else:
+	    split = None
+
+	# Distribute sub-list
+	data = comm.scatter(split, root=0)	    	
+
+	# Each processor runs its sub-list
+	dump_mat = []
+	for x in data:
+	    res = eval_idt([gas,opt,x])
+	    dump_point = np.hstack((x, res))
+            dump_mat.append(dump_point)
+
+	# Gather and write
+	dump_mat = comm.gather(dump_mat, root=0)
+	if (rank == 0):
+	    dump_mat = np.vstack(tuple(dump_mat))
+	    if (opt.write_output):
+		f = open(opt.output_file, 'w')
+                np.savetxt(f,dump_mat,fmt='%.3e')
+		f.close()	
 
 if __name__ == '__main__':
     main() 

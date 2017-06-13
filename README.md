@@ -4,18 +4,18 @@ pyIDT is a (parallel) Python code used to calculate ignition delay time (IDT) fo
 
 ## How do I get set up? ##
 
-First, setup the YAML file for the particular surrogate. Note that this requires the pyYAML package which can be installed trivially using pip. Sample YAML files are provided in the `data` directory. Also, some mechanism files have been provided in `mech` folder [1], [2]. The code, for example, can be run using
+First, setup the YAML file for the particular surrogate. Note that this requires the pyYAML package which can be installed trivially using pip. Sample YAML files are provided in the `data` directory. Also, some mechanism files have been provided in `mech` folder [1], [2]. The code, for example, can be run using 4 processors as follows
 
 ```
 mkdir output
-python test_idt.py data/violi.yml
+mpirun -np 4 python mpi_main.py data/violi.yml
 ```
 
 Other prerequisites for this code are 
 
+* [mpi4py](http://mpi4py.scipy.org/) 
 * cantera - python
-* multiprocessing
-* numpy, itertools
+* numpy
 
 ## License ##
 
@@ -28,6 +28,6 @@ Please refer to the LICENSE.pdf in the repository. Note that this code requires 
 
 ## References ##
 
-[1] Frassoldati, Alessio, et al. "Kinetic modeling study of ethanol and dimethyl ether addition to premixed low-pressure propene–oxygen–argon flames." Combustion and Flame 158.7 (2011): 1264-1276.
+[1] Frassoldati, Alessio, et al. "Kinetic modeling study of ethanol and dimethyl ether addition to premixed low-pressure propene-oxygen-argon flames." Combustion and Flame 158.7 (2011): 1264-1276.
 
 [2] Wallington, T. J., P. Dagaut, and M. J. Kurylo. "UV absorption cross sections and reaction kinetics and mechanisms for peroxy radicals in the gas phase." Chemical reviews 92.4 (1992): 667-710.

@@ -6,8 +6,8 @@ from support import set_gas_using_palette
 
 
 def eval_idt(args):
-    mech, options, x = args
-    gas = global_var.gases[mech]
+    gas, options, x = args
+    # gas = global_var.gases[mech]
     t_fin = options.t_fin
 
     time_vec = []

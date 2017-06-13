@@ -95,7 +95,7 @@ def main():
         for idx,mesh_point in enumerate(mesh_data):
        	    dump_point = np.hstack((mesh_point, res[idx]))
             dump_mat.append(dump_point)            
-        np.savetxt(f,dump_mat,fmt='%.3e')
+        np.savetxt(f,dump_mat,fmt='%.4e')
 
       
     f.close()
