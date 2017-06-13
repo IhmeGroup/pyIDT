@@ -5,7 +5,7 @@ test_palette:
 - IC8H18
 - NC12H26
 test_composition: [0.1, 0.295, 0.01, 0.055, 0.54]
-cti_file: mech/POLIMI_TOT.cti
+mech_file: mech/POLIMI_TOT.xml
 outer_center: [0.5, 0.5, 0.5, 0.5, 0.5]
 outer_intervals: [0.5, 0.5, 0.5, 0.5, 0.5]
 mixture_name: gas

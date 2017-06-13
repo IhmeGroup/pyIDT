@@ -1,5 +1,5 @@
 class options:
-    cti_file = ''
+    mech_file = ''
     mixture = ''
     nx = 20
     t_fin = 0.0
@@ -21,7 +21,7 @@ class options:
     def dump(self):
 	print "test_palette: ", self.palette
         print "test_composition: ", self.test_comp
-	print "cti_file: ", self.cti_file
+	print "cti_file: ", self.mech_file
 	print "mixture_name: ", self.mixture
 	print "palette_resolution: ", self.nx
 	print "final_time: ", self.t_fin

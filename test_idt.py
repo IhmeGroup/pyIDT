@@ -34,7 +34,7 @@ def main():
     opt.test_comp = config["test_composition"]
     opt.outer_center = config["outer_center"]
     opt.outer_intervals = config["outer_intervals"]
-    opt.cti_file = config["cti_file"]
+    opt.mech_file = config["mech_file"]
     opt.mixture = config["mixture_name"]
     opt.nx = config["palette_resolution"]
     opt.pres = config["pressure"]
@@ -71,7 +71,7 @@ def main():
     # Create gas objects for all processes
     pool = multiprocessing.Pool(processes=nProcs,
                                 initializer=init_process,
-                                initargs=(opt.cti_file,))
+                                initargs=(opt.mech_file,))
  
     try:
         os.remove(opt.output_file)
@@ -80,7 +80,7 @@ def main():
     f = open(opt.output_file, 'a')
 
     res = pool.map(eval_idt,
-                zip(itertools.repeat(opt.cti_file),
+                zip(itertools.repeat(opt.mech_file),
                     itertools.repeat(opt),
 		    mesh_data))
 
