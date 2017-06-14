@@ -87,6 +87,9 @@ def main():
 	else:
 	    split = None
 
+        # Begin timing
+	t0 = MPI.Wtime()
+
 	# Distribute sub-list
 	data = comm.scatter(split, root=0)	    	
 
@@ -97,10 +100,17 @@ def main():
 	    dump_point = np.hstack((x, res))
             dump_mat.append(dump_point)
 
-	# Gather and write
+	# Gather results
 	dump_mat = comm.gather(dump_mat, root=0)
+
+        # Stop timing
+        t1 = MPI.Wtime()
+
 	if (rank == 0):
 	    dump_mat = np.vstack(tuple(dump_mat))
+            print "Computation finished"
+            print "Time elapsed: ", t1 - t0, " (s)"
+
 	    if (opt.write_output):
 		f = open(opt.output_file, 'w')
                 np.savetxt(f,dump_mat,fmt='%.3e')

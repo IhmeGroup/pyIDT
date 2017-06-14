@@ -6,9 +6,9 @@ from support import set_gas_using_palette
 
 
 def eval_idt(args):
-    #gas, options, x = args
-    mech, options, x = args
-    gas = global_var.gases[mech]
+    gas, options, x = args
+    #mech, options, x = args
+    #gas = global_var.gases[mech]
     t_fin = options.t_fin
 
     time_vec = []
@@ -56,10 +56,10 @@ def eval_idt(args):
             max_der = der
             index = idx
 
-    if temp_vec[index] < t:
+    if temp_vec[index] <= t:
         return -1
     else:
-	print str(["{:0.3f}".format(y) for y in x]) +", "+ str("{:0.7e}".format(time_vec[index]))
+	print str(["{:0.3f}".format(y) for y in x]) +", "+ str("{:0.7e}".format(time_vec[index])) + ", " + str("{:0.4e}".format(temp_vec[index]))
         #print str(options.pres) + ", " + str(options.temp) + ", " + str(options.phi) + ", " + str("{:0.7e}".format(time_vec[index]))
 	sys.stdout.flush()
         return time_vec[index]

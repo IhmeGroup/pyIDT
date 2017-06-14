@@ -25,7 +25,8 @@ def init_process(mech):
 def main():
 
     # Read config file from command line
-    config_file = sys.argv[1] 
+    config_file = sys.argv[1]
+    nProcs = int(sys.argv[2]) 
     yaml_file = open(config_file)
     config = yaml.safe_load(yaml_file)  
  
@@ -52,7 +53,7 @@ def main():
     yaml_file.close()
 
     # Set gas
-    gas = ct.Solution(opt.cti_file)
+    gas = ct.Solution(opt.mech_file)
 
     # Check override
     check_override(gas, opt)
@@ -66,8 +67,12 @@ def main():
     print "Number of points = ", (np.array(mesh_data)).shape[0]
 
     # Estimate number of processes
-    nProcs = multiprocessing.cpu_count()
-    print "Number of cores = ", nProcs
+    maxProcs = multiprocessing.cpu_count()
+    if (nProcs > maxProcs):
+        print "More than maximum processors specified"
+        sys.exit()
+    print "Specified processors = ", nProcs
+    print "Maximum number of processors = ", maxProcs
 
     # Create gas objects for all processes
     pool = multiprocessing.Pool(processes=nProcs,
