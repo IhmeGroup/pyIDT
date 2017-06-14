@@ -9,6 +9,7 @@ import cantera as ct
 import numpy as np
 import os
 import sys
+import timeit
 import yaml
 
 # Refer to pyCantera tutorials for multiprocessing example
@@ -79,6 +80,9 @@ def main():
         pass
     f = open(opt.output_file, 'a')
 
+    # Start timing
+    t0 = timeit.default_timer()
+
     res = pool.map(eval_idt,
                 zip(itertools.repeat(opt.mech_file),
                     itertools.repeat(opt),
@@ -88,7 +92,11 @@ def main():
     pool.close()
     pool.join()
 
+    # End timing
+    t1 = timeit.default_timer()
+
     print "Computation finished!"
+    print "Time elapsed: ", t1-t0
 
     dump_mat = []
     if (opt.write_output): 

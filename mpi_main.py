@@ -23,30 +23,35 @@ def main():
 	config_file = sys.argv[1]
 	if (rank == 0):
 	    print "Reading options file..."
-	yaml_file = open(config_file)
-        config = yaml.safe_load(yaml_file)
+	    yaml_file = open(config_file)
+	    config = yaml.safe_load(yaml_file)
 
-        # Set options structure
-	opt = options()
-	opt.palette = config["test_palette"]
-	opt.test_comp = config["test_composition"]
-	opt.outer_center = config["outer_center"]
-	opt.outer_intervals = config["outer_intervals"]
-	opt.mech_file = config["mech_file"]
-	opt.mixture = config["mixture_name"]
-	opt.nx = config["palette_resolution"]
-	opt.pres = config["pressure"]
-	opt.temp = config["temperature"]
-	opt.phi = config["equivalence_ratio"]
-	opt.t_fin = config["final_time"]
-	opt.target_mw = config["target_mw"]
-	opt.target_hc = config["target_hc"]
-	opt.output_file = config["output_file"]
-	opt.override_targets = config["override_targets"]
-	opt.write_output = config["write_output"]
+	    # Set options structure
+	    opt = options()
+	    opt.palette = config["test_palette"]
+	    opt.test_comp = config["test_composition"]
+	    opt.outer_center = config["outer_center"]
+	    opt.outer_intervals = config["outer_intervals"]
+	    opt.mech_file = config["mech_file"]
+	    opt.mixture = config["mixture_name"]
+	    opt.nx = config["palette_resolution"]
+	    opt.pres = config["pressure"]
+	    opt.temp = config["temperature"]
+	    opt.phi = config["equivalence_ratio"]
+	    opt.t_fin = config["final_time"]
+	    opt.target_mw = config["target_mw"]
+	    opt.target_hc = config["target_hc"]
+	    opt.output_file = config["output_file"]
+	    opt.override_targets = config["override_targets"]
+	    opt.write_output = config["write_output"]
 
-	# Close YAML file
-	yaml_file.close()
+	    # Close YAML file
+	    yaml_file.close()
+	else:
+	    opt = None
+
+	# Broadcast options
+	opt = comm.bcast(opt, root=0)
       
 	# Set gas
         if (rank == 0):
@@ -56,12 +61,13 @@ def main():
 	# Check override
 	check_override(gas,opt)
 
-	# Dump options (only Processor 0)
-	if (rank == 0):
+	# Dump options (only Processor 1 for testing)
+	if (rank == 1):
 	    opt.dump()
 
 	    # Generate mesh
 	    # Only done using Processor 0
+	if (rank == 0):
 	    mesh_data = mesh_generate_box(gas,opt)
             print "Mesh generation complete!"
 	    nEl_global = (np.array(mesh_data)).shape[0]
