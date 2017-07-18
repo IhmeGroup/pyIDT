@@ -2,6 +2,8 @@
 
 pyIDT is a (parallel) Python code used to calculate ignition delay time (IDT) for candidate fuel-surrogate compositions. The space of candidate compositions is first evaluated using a set of linear constraints based on physical properties.
 
+The `master` branch uses `multiprocessing` to parallelize and is hence suited for single-node applications. Please refer to the `MPI` branch for the multiple-node version.
+
 ## How do I get set up? ##
 
 First, setup the YAML file for the particular surrogate. Note that this requires the pyYAML package which can be installed trivially using pip. Sample YAML files are provided in the `data` directory. Also, some mechanism files have been provided in `mech` folder [1], [2]. The code, for example, can be run using
