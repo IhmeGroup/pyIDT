@@ -88,8 +88,9 @@ def main():
 	dump_mat = []
 	for x in data:
 	    res = eval_idt([gas,opt,x])
-	    dump_point = np.hstack((x, res))
-            dump_mat.append(dump_point)
+            for idx, phi in enumerate(opt.phi):
+	        dump_point = np.hstack((x, phi, res[idx]))
+                dump_mat.append(dump_point)
 
 	# Gather and write
 	dump_mat = comm.gather(dump_mat, root=0)

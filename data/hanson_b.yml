@@ -12,7 +12,7 @@ mixture_name: gas
 palette_resolution: 10
 pressure: 2239282.0
 temperature: 833.0
-equivalence_ratio: 1.0
+equivalence_ratio: [1.0]
 final_time: 5.0e-3
 target_mw: 136.0
 target_hc: 1.93
