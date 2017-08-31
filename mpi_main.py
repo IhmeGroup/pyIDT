@@ -28,22 +28,7 @@ def main():
 
         # Set options structure
 	opt = options()
-	opt.palette = config["test_palette"]
-	opt.test_comp = config["test_composition"]
-	opt.outer_center = config["outer_center"]
-	opt.outer_intervals = config["outer_intervals"]
-	opt.mech_file = config["mech_file"]
-	opt.mixture = config["mixture_name"]
-	opt.nx = config["palette_resolution"]
-	opt.pres = config["pressure"]
-	opt.temp = config["temperature"]
-	opt.phi = config["equivalence_ratio"]
-	opt.t_fin = config["final_time"]
-	opt.target_mw = config["target_mw"]
-	opt.target_hc = config["target_hc"]
-	opt.output_file = config["output_file"]
-	opt.override_targets = config["override_targets"]
-	opt.write_output = config["write_output"]
+        opt.parse(config)
 
 	# Close YAML file
 	yaml_file.close()
