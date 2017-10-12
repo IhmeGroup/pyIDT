@@ -26,6 +26,8 @@ def eval_idt(args):
     # Set gas composition with air
     idts = []
     for phi in phi_list:
+	time_vec = []
+	temp_vec = []
 	x_mod = (phi/stoich_o2)*x
 	comp_string = set_gas_using_palette(gas, options, t, p, x_mod)
 	comp_string += ',O2:1,N2:3.76'
